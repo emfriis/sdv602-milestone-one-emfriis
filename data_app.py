@@ -1,95 +1,236 @@
-import matplotlib
 import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
 import numpy as np
 from pandas.core.frame import DataFrame
-matplotlib.use('TkAgg')
 
 def draw_figure(canvas, figure):
+    '''
+    This function draws a matplotlib figure to a pysimplegui canvas.
+    
+    Args:
+        canvas: the canvas to draw the figure to
+        figure: the figure to draw
+    
+    Returns:
+        figure_canvas_agg: a renderable matplotlib figure
+    '''
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
     figure_canvas_agg.draw()
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
 def delete_figure_agg(figure_agg):
+    '''
+    This function deletes the current renderable matplotlib figure as stored in a global variable.
+    '''
     figure_agg.get_tk_widget().forget()
     plt.close('all')
 
-def main():
+def login():
     '''
-    
+    This function returns a pysimplegui layout to generate a placeholder login window.
     '''
-    data_source = [pd.DataFrame(), pd.DataFrame(), pd.DataFrame()]
-    data_source_current = 0
+    layout = [
+        [
+            sg.Text("Username")
+        ], [
+            sg.Input()
+        ], [
+            sg.Text("Password")
+        ], [
+            sg.Input()
+        ], [
+            sg.Button("Login")
+        ]
+    ]
+    return sg.Window("Login", layout, finalize=True)
+
+def home():
+    '''
+    This function returns a pysimplegui layout for a simple navigation home window
+    '''
     sg.theme('Dark Blue 3')
     layout = [
         [ # --- gui row one
-            sg.Button('Select Data Source')
-        ], [ # --- gui row two
-            sg.Canvas(key='-CANVAS-')
-        ], [ # --- gui row three
-            sg.Text('Summary Information')
-        ], [ # --- gui row four
-            sg.Text('Chat Placeholder')
-        ], [ # --- gui row five
-            sg.Button('Data Source One'),
+            sg.Button('Data Source One'), 
             sg.Button('Data Source Two'), 
             sg.Button('Data Source Three')
         ]
     ]
-    window = sg.Window("Data View", layout)
-    figure_agg = None
-    
-    while True:
-        event, value = window.read()
-        if event == "Exit" or event == sg.WIN_CLOSED:
-            break
-        if event == 'Select Data Source':
-            #fig = plt.clf()
-            file_path = sg.PopupGetFile('Please select a data source')
-            if file_path:
-                if figure_agg:
-                    delete_figure_agg(figure_agg)
-                data_source[data_source_current] = pd.read_csv(file_path).pivot('place', 'group', 'count')
-                data_plot = data_source[data_source_current].plot(kind='line')
-                fig = plt.gcf()
-                figure_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
-                print(data_source[data_source_current])
-        if event == 'Data Source One':
-            #fig = plt.clf()
-            if figure_agg:
-                delete_figure_agg(figure_agg)
-            data_source_current = 0
-            if not data_source[0].empty:
-                data_source[0] = pd.read_csv(file_path).pivot('place', 'group', 'count')
-                data_plot = data_source[0].plot(kind='line')
-                fig = plt.gcf()
-                figure_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
-                print(data_source[data_source_current])
-        if event == 'Data Source Two':
-            #fig = plt.clf()
-            if figure_agg:
-                delete_figure_agg(figure_agg)
-            data_source_current = 1
-            if not data_source[1].empty:
-                data_source[1] = pd.read_csv(file_path).pivot('place', 'group', 'count')
-                data_plot = data_source[1].plot(kind='line')
-                fig = plt.gcf()
-                figure_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
-                print(data_source[data_source_current])
-        if event == 'Data Source Three':
-            #fig = plt.clf()
-            if figure_agg:
-                delete_figure_agg(figure_agg)
-            data_source_current = 2
-            if not data_source[2].empty:
-                data_source[2] = pd.read_csv(file_path).pivot('place', 'group', 'count')
-                data_plot = data_source[2].plot(kind='line')
-                fig = plt.gcf()
-                figure_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
-                print(data_source[data_source_current])
+    return sg.Window("Home", layout, finalize=True)
 
-if __name__ == "__main__":
-    main()
+class DataSourceOne():
+    '''
+    This class is used to build the first data source window. 
+    It contains an attribute "data_frame", used to remember the last selected data frame.
+    It also contains a function that returns a layout for a data view window.
+    '''
+    data_frame = pd.DataFrame()
+    
+    def get_layout(self):
+        '''
+        This function returns a layout for a data view window.
+        '''
+        layout = [
+            [ # --- gui row one
+                sg.Button('Select Data Source')
+            ], [ # --- gui row two
+                sg.Text("", key="-TITLE-")
+            ], [ # --- gui row three
+                sg.Canvas(key='-CANVAS-')
+            ], [ # --- gui row four
+                sg.Text('Summary Information')
+            ], [ # --- gui row five
+                sg.Text('Chat Placeholder')
+            ], [ # --- gui row six
+                sg.Button('Data Source Two'), 
+                sg.Button('Data Source Three')
+            ]
+        ]
+        return layout
+
+class DataSourceTwo():
+    '''
+    This class is used to build the second data source window. 
+    It contains an attribute "data_frame", used to remember the last selected data frame.
+    It also contains a function that returns a layout for a data view window.
+    '''
+    data_frame = pd.DataFrame()
+    
+    def get_layout(self):
+        '''
+        This function returns a layout for a data view window.
+        '''
+        layout = [
+            [ # --- gui row one
+                sg.Button('Select Data Source')
+            ], [ # --- gui row two
+                sg.Text("", key="-TITLE-")
+            ], [ # --- gui row three
+                sg.Canvas(key='-CANVAS-')
+            ], [ # --- gui row four
+                sg.Text('Summary Information')
+            ], [ # --- gui row five
+                sg.Text('Chat Placeholder')
+            ], [ # --- gui row six
+                sg.Button('Data Source One'), 
+                sg.Button('Data Source Three')
+            ]
+        ]
+        return layout
+
+class DataSourceThree():
+    '''
+    This class is used to build the third data source window. 
+    It contains an attribute "data_frame", used to remember the last selected data frame.
+    It also contains a function that returns a layout for a data view window.
+    '''
+    data_frame = pd.DataFrame()
+    
+    def get_layout(self):
+        '''
+        This function returns a layout for a data view window.
+        '''
+        layout = [
+            [ # --- gui row one
+                sg.Button('Select Data Source')
+            ], [ # --- gui row two
+                sg.Text("", key="-TITLE-")
+            ], [ # --- gui row three
+                sg.Canvas(key='-CANVAS-')
+            ], [ # --- gui row four
+                sg.Text('Summary Information')
+            ], [ # --- gui row five
+                sg.Text('Chat Placeholder')
+            ], [ # --- gui row six
+                sg.Button('Data Source One'), 
+                sg.Button('Data Source Two')
+            ]
+        ]
+        return layout
+
+window_login, window_home, window_one, window_two, window_three = login(), None, None, None, None
+sg.theme('Dark Blue 3')
+one = DataSourceOne()
+two = DataSourceTwo()
+three = DataSourceThree()
+figure_agg = None
+
+while True:
+    window, event, values = sg.read_all_windows()
+    if event == "Exit" or event == sg.WIN_CLOSED:
+        if window == window_one:
+            window_one = None
+            window.close()
+        if window == window_two:
+            window_two = None
+            window.close()
+        if window == window_three:
+            window_three = None
+            window.close()
+        if window == window_home or window == window_login:
+            break   
+    if event == "Login":
+        window_login = None
+        window.close()
+        window_home = home()
+    if event == 'Select Data Source':
+        file_path = sg.PopupGetFile('Please select a data source')
+        if file_path:
+            if figure_agg:
+                delete_figure_agg(figure_agg)
+            if window_one:
+                one.data_frame = pd.read_csv(file_path).pivot('place', 'group', 'count')
+                data_plot = one.data_frame.plot(kind='line')
+            elif window_two:
+                two.data_frame = pd.read_csv(file_path).pivot('place', 'group', 'count')
+                data_plot = two.data_frame.plot(kind='line')
+            elif window_three:
+                three.data_frame = pd.read_csv(file_path).pivot('place', 'group', 'count')
+                data_plot = three.data_frame.plot(kind='line')
+            fig = plt.gcf()
+            figure_agg = draw_figure(window['-CANVAS-'].TKCanvas, fig)
+    if event == 'Data Source One' and not window_one:
+        if window == window_two:
+            window_two = None
+            window.close()
+        if window == window_three:
+            window_three = None
+            window.close()
+        window_one = sg.Window("Data Source One", one.get_layout(), finalize=True)
+        if not one.data_frame.empty:
+            if figure_agg:
+                delete_figure_agg(figure_agg)
+            data_plot = one.data_frame.plot(kind='line')
+            fig = plt.gcf()
+            figure_agg = draw_figure(window_one['-CANVAS-'].TKCanvas, fig)
+    if event == 'Data Source Two' and not window_two:
+        if window == window_one:
+            window_one = None
+            window.close()
+        if window == window_three:
+            window_three = None
+            window.close()
+        window_two = sg.Window("Data Source Two", two.get_layout(), finalize=True)
+        if not two.data_frame.empty:
+            if figure_agg:
+                delete_figure_agg(figure_agg)
+            data_plot = two.data_frame.plot(kind='line')
+            fig = plt.gcf()
+            figure_agg = draw_figure(window_two['-CANVAS-'].TKCanvas, fig)
+    if event == 'Data Source Three' and not window_three:
+        if window == window_one:
+            window_one = None
+            window.close()
+        if window == window_two:
+            window_two = None
+            window.close()
+        window_three = sg.Window("Data Source Three", three.get_layout(), finalize=True)
+        if not one.data_frame.empty:
+            if figure_agg:
+                delete_figure_agg(figure_agg)
+            data_plot = three.data_frame.plot(kind='line')
+            fig = plt.gcf()
+            figure_agg = draw_figure(window_three['-CANVAS-'].TKCanvas, fig)
