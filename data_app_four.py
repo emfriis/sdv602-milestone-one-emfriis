@@ -4,7 +4,6 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import pandas as pd
 import numpy as np
 from pandas.core.frame import DataFrame
-import time
 
 def draw_figure(canvas, figure):
     '''
