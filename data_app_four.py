@@ -7,18 +7,31 @@ from pandas.core.frame import DataFrame
 import time
 
 def draw_figure(canvas, figure):
+    '''
+    This function draws a matplotlib figure to a pysimplegui canvas.
+    
+    Args:
+        canvas: the canvas to draw the figure to
+        figure: the figure to draw
+    
+    Returns:
+        figure_canvas_agg: a renderable matplotlib figure
+    '''
     figure_canvas_agg = FigureCanvasTkAgg(figure, canvas)
     figure_canvas_agg.draw()
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
     return figure_canvas_agg
 
 def delete_figure_agg(figure_agg):
+    '''
+    This function deletes the current renderable matplotlib figure as stored in a global variable.
+    '''
     figure_agg.get_tk_widget().forget()
     plt.close('all')
 
 def login():
     '''
-    
+    This function returns a pysimplegui layout to generate a placeholder login window.
     '''
     layout = [
         [
@@ -37,7 +50,7 @@ def login():
 
 def home():
     '''
-    
+    This function returns a pysimplegui layout for a simple navigation home window
     '''
     sg.theme('Dark Blue 3')
     layout = [
@@ -51,11 +64,16 @@ def home():
 
 class DataSourceOne():
     '''
-    
+    This class is used to build the first data source window. 
+    It contains an attribute "data_frame", used to remember the last selected data frame.
+    It also contains a function that returns a layout for a data view window.
     '''
     data_frame = pd.DataFrame()
     
     def get_layout(self):
+        '''
+        This function returns a layout for a data view window.
+        '''
         layout = [
             [ # --- gui row one
                 sg.Button('Select Data Source')
@@ -76,11 +94,16 @@ class DataSourceOne():
 
 class DataSourceTwo():
     '''
-    
+    This class is used to build the second data source window. 
+    It contains an attribute "data_frame", used to remember the last selected data frame.
+    It also contains a function that returns a layout for a data view window.
     '''
     data_frame = pd.DataFrame()
     
     def get_layout(self):
+        '''
+        This function returns a layout for a data view window.
+        '''
         layout = [
             [ # --- gui row one
                 sg.Button('Select Data Source')
@@ -101,11 +124,16 @@ class DataSourceTwo():
 
 class DataSourceThree():
     '''
-    
+    This class is used to build the third data source window. 
+    It contains an attribute "data_frame", used to remember the last selected data frame.
+    It also contains a function that returns a layout for a data view window.
     '''
     data_frame = pd.DataFrame()
     
     def get_layout(self):
+        '''
+        This function returns a layout for a data view window.
+        '''
         layout = [
             [ # --- gui row one
                 sg.Button('Select Data Source')
