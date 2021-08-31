@@ -42,16 +42,38 @@ def login():
         ], [
             sg.Input()
         ], [
-            sg.Button("Login")
+            sg.Button("Login"), sg.Button("Register")
         ]
     ]
     return sg.Window("Login", layout, finalize=True)
+
+def registration():
+    '''
+    This function returns a pysimplegui layout to generate a placeholder registration window.
+    '''
+    layout = [
+        [
+            sg.Text("Email")
+        ], [
+            sg.Input()
+        ], [
+            sg.Text("Username")
+        ], [
+            sg.Input()
+        ], [
+            sg.Text("Password")
+        ], [
+            sg.Input()
+        ], [
+            sg.Button("Register")
+        ]
+    ]
+    return sg.Window("Registration", layout, modal=True, finalize=True)
 
 def home():
     '''
     This function returns a pysimplegui layout for a simple navigation home window
     '''
-    sg.theme('Dark Blue 3')
     layout = [
         [ # --- gui row one
             sg.Button('Data Source One'), 
@@ -151,7 +173,7 @@ class DataSourceThree():
         ]
         return layout
 
-window_login, window_home, window_one, window_two, window_three = login(), None, None, None, None
+window_login, window_register, window_home, window_one, window_two, window_three = login(), None, None, None, None, None
 sg.theme('Dark Blue 3')
 one = DataSourceOne()
 two = DataSourceTwo()
@@ -170,12 +192,20 @@ while True:
         if window == window_three:
             window_three = None
             window.close()
+        if window == window_register:
+            window_register = None
+            window.close()
         if window == window_home or window == window_login:
             break   
     if event == "Login":
         window_login = None
         window.close()
         window_home = home()
+    if event == "Register" and window != window_register:
+        window_register = registration()
+    if event == "Register" and window == window_register:
+        window_register = None
+        window.close()
     if event == 'Select Data Source':
         file_path = sg.PopupGetFile('Please select a data source')
         if file_path:
