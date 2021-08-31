@@ -79,6 +79,8 @@ def home():
             sg.Button('Data Source One'), 
             sg.Button('Data Source Two'), 
             sg.Button('Data Source Three')
+        ], [ # --- gui row two
+            sg.Button('Logout')
         ]
     ]
     return sg.Window("Home", layout, finalize=True)
@@ -182,7 +184,7 @@ figure_agg = None
 
 while True:
     window, event, values = sg.read_all_windows()
-    if event == "Exit" or event == sg.WIN_CLOSED:
+    if event == "Exit" or event == sg.WIN_CLOSED or event == "Logout":
         if window == window_one:
             window_one = None
             window.close()
