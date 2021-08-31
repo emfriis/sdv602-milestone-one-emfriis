@@ -229,7 +229,7 @@ while True:
         if window == window_three:
             window_three = None
             window.close()
-        window_one = sg.Window("Data Source One", one.get_layout(), finalize=True)
+        window_one = sg.Window("Data Source One", one.get_layout(), modal=True, finalize=True)
         if not one.data_frame.empty:
             if figure_agg:
                 delete_figure_agg(figure_agg)
@@ -243,7 +243,7 @@ while True:
         if window == window_three:
             window_three = None
             window.close()
-        window_two = sg.Window("Data Source Two", two.get_layout(), finalize=True)
+        window_two = sg.Window("Data Source Two", two.get_layout(), modal=True, finalize=True)
         if not two.data_frame.empty:
             if figure_agg:
                 delete_figure_agg(figure_agg)
@@ -257,7 +257,7 @@ while True:
         if window == window_two:
             window_two = None
             window.close()
-        window_three = sg.Window("Data Source Three", three.get_layout(), finalize=True)
+        window_three = sg.Window("Data Source Three", three.get_layout(), modal=True, finalize=True)
         if not one.data_frame.empty:
             if figure_agg:
                 delete_figure_agg(figure_agg)
